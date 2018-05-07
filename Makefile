@@ -5,7 +5,7 @@ BIN_PATH=bin
 run: all
 	./$(BIN_PATH)/$(OUTPUT) input/matrix_a input/matrix_b output/matrix_c
 
-all: prepare main.o matrix.o
+all: prepare main.o matrix.o genmatrix.o
 	$(CC) $(OUTPUT).o matrix.o -o $(BIN_PATH)/$(OUTPUT)
 
 main.o: main.c
@@ -14,9 +14,13 @@ main.o: main.c
 matrix.o: matrix.c
 	$(CC) -c matrix.c
 
+genmatrix.o: genmatrix.c
+	$(CC) -c genmatrix.c
+
 prepare: clean
 	mkdir $(BIN_PATH)
 
 clean:
 	rm -f *.o $(OUTPUT)
 	rm -Rf $(BIN_PATH)
+	rm -f output/*
