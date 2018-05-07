@@ -28,6 +28,13 @@ and will run the matrix multiplication which results will be provided within
 The idea is to parallelize function `matrix_mult` described at `matrix.c` and
 `matrix.h` source files.
 
+### Contributing
+
+To contribute to this project, just create a fork of this project on GitHub and
+to send your contribution, push a new branch and create a [Pull Request](https://help.github.com/articles/about-pull-requests/) based on this new branch.
+By sending a Pull Request, each contributor can discuss the source code together and merge on master
+when they come to a common solution/idea.
+
 ### Authors
 
 This project is maintained by Adolfo Eloy and Milad Katebi and was created at IME-USP.
