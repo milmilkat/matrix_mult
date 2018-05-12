@@ -15,7 +15,7 @@ matrix.o: matrix.c
 	$(CC) -c matrix.c
 
 genmatrix.o: genmatrix.c
-	$(CC) -c genmatrix.c
+	$(CC) genmatrix.c -o $(BIN_PATH)/genmatrix
 
 prepare: clean
 	mkdir $(BIN_PATH)
