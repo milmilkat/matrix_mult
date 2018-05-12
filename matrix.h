@@ -7,8 +7,8 @@
 
 // types
 struct Matrix {
-  long M; // lines
-  long N; // columns
+  long rows; // lines
+  long cols; // columns
   double** items;
 };
 
