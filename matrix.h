@@ -17,6 +17,7 @@ typedef struct Matrix Matrix_t;
 // prototypes
 Matrix_t matrix_load_from_file(FILE *file);
 Matrix_t matrix_create(long rows, long cols);
+Matrix_t matrix_transpose(Matrix_t a);
 void matrix_set(Matrix_t a, long row, long col, double value);
 Matrix_t matrix_mult(Matrix_t a, Matrix_t b);
 bool matrix_mult_valid(Matrix_t a, Matrix_t b);
