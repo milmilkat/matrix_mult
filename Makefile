@@ -20,6 +20,10 @@ genmatrix.o: genmatrix.c
 prepare: clean
 	mkdir $(BIN_PATH)
 
+test:
+	$(CC) matrix.o matrix_test.c -o $(BIN_PATH)/matrix_test
+	./$(BIN_PATH)/matrix_test
+
 clean:
 	rm -f *.o $(OUTPUT)
 	rm -Rf $(BIN_PATH)

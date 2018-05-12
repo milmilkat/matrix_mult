@@ -30,6 +30,15 @@ Matrix_t matrix_create(long rows, long cols)
   return A;
 }
 
+Matrix_t matrix_transpose(Matrix_t a)
+{
+  Matrix_t b = matrix_create(a.cols, a.rows);
+  for (long j = 0; j < a.cols; j++)
+    for (long i = 0; i < a.rows; i++)
+      matrix_set(b, j, i, a.items[i][j]);
+  return b;
+}
+
 void matrix_set(Matrix_t a, long row, long col, double value)
 {
   a.items[row][col] = value;
