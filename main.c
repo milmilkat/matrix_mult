@@ -35,7 +35,8 @@ int main(int argc, char *argv[]) {
     Matrix_t t = matrix_transpose(a);
     matrix_print(t);
 
-    Matrix_t c = matrix_mult(a, b);
+    //Matrix_t c = matrix_mult(a, b);
+	Matrix_t c = strassen(a , b);
     matrix_print_to_file(matrix_file_c, c);
     printf("Results written to %s\n", matrix_path_c);
     release_resources();
