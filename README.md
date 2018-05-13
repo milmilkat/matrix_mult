@@ -23,6 +23,16 @@ just run `make` within the root project's directory. It will compile this projec
 and will run the matrix multiplication which results will be provided within
 `output/matrix_c` file.
 
+### Generating random matrix
+
+Sometimes we need a large matrix representation within a file to do some tests with `matrix_mult` project.
+Instead of manually writing it, just run `make` and then run `./genmatrix <number_of_rows> <number_of_cols>`.
+It will generate a matrix with random values (double precision) with the format required by `matrix_mult`.
+
+### Testing
+
+To run some unit tests, just type `make test`
+
 ### Parallelization
 
 The idea is to parallelize function `matrix_mult` described at `matrix.c` and
