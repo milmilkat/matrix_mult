@@ -1,5 +1,8 @@
 #include "matrix.h"
 #include <string.h>
+#include <omp.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 char *matrix_path_a, *matrix_path_b, *matrix_path_c;
 FILE *matrix_file_a, *matrix_file_b, *matrix_file_c;
@@ -32,11 +35,46 @@ int main(int argc, char *argv[]) {
   // validates if a is able to be multiplied by b.
   if (matrix_mult_valid(a, b))
   {
-    Matrix_t t = matrix_transpose(a);
-    matrix_print(t);
+	Matrix_t c = matrix_create(a.rows,b.cols);
+    
+	//Matrix_t t = matrix_transpose(a);
+    //matrix_print(t);
 
     //Matrix_t c = matrix_mult(a, b);
-	Matrix_t c = strassen(a , b);
+	//Matrix_t c = strassen(a , b);
+
+	/*** multithreading with chunking rows ***/
+	//************************************************************************************************************
+
+	int	tid, nthreads, i, j, k, chunk;
+
+	chunk = 1;                    // set loop iteration chunk size
+
+	// Spawn a parallel region explicitly scoping all variables
+	#pragma omp parallel shared(a,b,c,nthreads,chunk) private(tid,i,j,k)
+	  {
+	  tid = omp_get_thread_num();
+	  if (tid == 0)
+		{
+		nthreads = 4; //omp_get_num_threads();
+		printf("Starting matrix multiple example with %d threads\n",nthreads);
+		}
+
+	  // Do matrix multiply sharing iterations on outer loop 
+	  // Display who does which iterations for demonstration purposes 
+	  printf("Thread %d starting matrix multiply...\n",tid);
+	  #pragma omp for schedule (static, chunk)
+	  for (long i=0; i<a.rows; i++)    
+		{
+		printf("Thread=%d did row=%ld\n",tid,i);
+		for(long j=0; j<b.cols; j++)       
+		  for (long k=0; k<a.cols; k++)
+		    c.items[i][j] += a.items[i][k] * b.items[k][j];
+		}
+	  }   //End of parallel region 
+
+	//************************************************************************************************************
+
     matrix_print_to_file(matrix_file_c, c);
     printf("Results written to %s\n", matrix_path_c);
     release_resources();
