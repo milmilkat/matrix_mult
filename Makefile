@@ -6,7 +6,7 @@ run: all
 	./$(BIN_PATH)/$(OUTPUT) input/matrix_a input/matrix_b output/matrix_c
 
 all: prepare main.o matrix.o genmatrix.o
-	$(CC) $(OUTPUT).o matrix.o -fopenmp -o $(BIN_PATH)/$(OUTPUT)
+	$(CC) $(OUTPUT).o matrix.o util.o -fopenmp -o $(BIN_PATH)/$(OUTPUT)
 
 main.o: main.c
 	$(CC) -fopenmp -c $(OUTPUT).c
@@ -16,6 +16,9 @@ matrix.o: matrix.c
 
 genmatrix.o: genmatrix.c
 	$(CC) -fopenmp genmatrix.c -o $(BIN_PATH)/genmatrix
+
+util.o: util.c
+	$(CC) -c util.c
 
 prepare: clean
 	mkdir $(BIN_PATH)
