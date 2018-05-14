@@ -76,6 +76,11 @@ Matrix_t matrix_mult_t(Matrix_t a, Matrix_t b)
   return result;
 }
 
+bool matrix_mult_valid(Matrix_t a, Matrix_t b)
+{
+  return a.cols == b.rows;
+}
+
 void matrix_print(Matrix_t a)
 {
   for (int i=0; i<a.rows; i++) {

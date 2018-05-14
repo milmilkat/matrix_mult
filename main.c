@@ -46,12 +46,12 @@ int main(int argc, char *argv[]) {
 	/*** multithreading with chunking rows ***/
 	//************************************************************************************************************
 
-	int	tid, nthreads, i, j, k, chunk;
+	int	tid, nthreads, chunk;
 
 	chunk = 1;                    // set loop iteration chunk size
 
 	// Spawn a parallel region explicitly scoping all variables
-	#pragma omp parallel shared(a,b,c,nthreads,chunk) private(tid,i,j,k)
+	#pragma omp parallel shared(a,b,c,nthreads,chunk) private(tid)
 	  {
 	  tid = omp_get_thread_num();
 	  if (tid == 0)
@@ -72,6 +72,13 @@ int main(int argc, char *argv[]) {
 		    c.items[i][j] += a.items[i][k] * b.items[k][j];
 		}
 	  }   //End of parallel region 
+
+	//************************************************************************************************************
+
+	/*** multithreading with Divide and Conquer ***/
+	//************************************************************************************************************
+
+		
 
 	//************************************************************************************************************
 
