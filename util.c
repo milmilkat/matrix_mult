@@ -1,6 +1,6 @@
 #include "util.h"
 
-static uint64_t get_time(void)
+uint64_t get_time(void)
 {
     struct timespec time;
     clock_gettime(CLOCK_REALTIME, &time);
