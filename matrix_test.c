@@ -12,6 +12,7 @@ void assertEquals(double, double);
 // functions for unit testing
 void test_small_matrix_mult(void);
 void test_matrix_transpose(void);
+void test_matrix_mult_t(void);
 
 int main(int argc, char *argv[])
 {
@@ -20,6 +21,7 @@ int main(int argc, char *argv[])
   printf(ANSI_COLOR_YELLOW "************************\n");
   test_small_matrix_mult();
   test_matrix_transpose();
+  test_matrix_mult_t();
   printf("\nAll tests have passed.\n");
 }
 
@@ -48,6 +50,33 @@ void test_small_matrix_mult()
     assertEquals(15.0,  B.items[1][0]);
     assertEquals(22.0,  B.items[1][1]);
     assertEquals(14.0,  B.items[1][2]);
+}
+
+void test_matrix_mult_t()
+{
+  printf(ANSI_COLOR_YELLOW "\nrunning test_matrix_mult_t\n");
+  // prepare data
+  Matrix_t A = matrix_create(2, 2);
+  Matrix_t X = matrix_create(2, 3);
+
+  matrix_set(A, 0, 0, 1.0); matrix_set(A, 0, 1, 2.0);
+  matrix_set(A, 1, 0, 3.0); matrix_set(A, 1, 1, 4.0);
+  matrix_set(X, 0, 0, 1.0); matrix_set(X, 0, 1, 2.0); matrix_set(X, 0, 2, 2.0);
+  matrix_set(X, 1, 0, 3.0); matrix_set(X, 1, 1, 4.0); matrix_set(X, 1, 2, 2.0);
+
+  // run test
+  Matrix_t B = matrix_mult(A, X);
+  Matrix_t Xt = matrix_transpose(X);
+  Matrix_t Bt = matrix_mult_t(A, Xt);
+
+  assertEquals(B.items[0][0], Bt.items[0][0]);
+  assertEquals(B.items[0][1], Bt.items[0][1]);
+  assertEquals(B.items[0][2], Bt.items[0][2]);
+
+  assertEquals(B.items[1][0], Bt.items[1][0]);
+  assertEquals(B.items[1][1], Bt.items[1][1]);
+  assertEquals(B.items[1][2], Bt.items[1][2]);
+
 }
 
 void test_matrix_transpose()

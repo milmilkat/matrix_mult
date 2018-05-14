@@ -60,6 +60,22 @@ Matrix_t matrix_mult(Matrix_t a, Matrix_t b)
   return result;
 }
 
+Matrix_t matrix_mult_t(Matrix_t a, Matrix_t b)
+{
+  Matrix_t result = matrix_create(a.rows, b.rows);
+
+  for (int i=0; i<a.rows; i++) {
+    for (int j=0; j<b.rows; j++) {
+      double sum = 0;
+      for (int k=0; k<b.cols; k++) {
+        sum += a.items[i][k] * b.items[j][k];
+      }
+      result.items[i][j] = sum;
+    }
+  }
+  return result;
+}
+
 bool matrix_mult_valid(Matrix_t a, Matrix_t b)
 {
   return a.cols == b.rows;
