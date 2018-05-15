@@ -32,14 +32,7 @@ int main(int argc, char *argv[]) {
   // validates if a is able to be multiplied by b.
   if (matrix_mult_valid(a, b))
   {
-    
-	//Matrix_t t = matrix_transpose(a);
-    //matrix_print(t);
-
-    //Matrix_t c = matrix_mult(a, b);
-	
-	Matrix_t c = matrix_mult_openmp(a, b, 4, 1);
-
+	  Matrix_t c = matrix_mult_openmp(a, b, 4, 1);
     matrix_print_to_file(matrix_file_c, c);
     printf("Results written to %s\n", matrix_path_c);
     release_resources();
