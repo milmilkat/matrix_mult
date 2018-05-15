@@ -1,6 +1,5 @@
 #include "matrix.h"
 #include <omp.h>
-#include <string.h>
 
 Matrix_t matrix_load_from_file(FILE *file)
 {

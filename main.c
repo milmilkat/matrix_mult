@@ -1,6 +1,5 @@
 #include "matrix.h"
 #include <string.h>
-#include <omp.h>
 
 char *matrix_path_a, *matrix_path_b, *matrix_path_c;
 FILE *matrix_file_a, *matrix_file_b, *matrix_file_c;
