@@ -1,11 +1,18 @@
 OUTPUT=main
-CC=gcc
 BIN_PATH=bin
+UNAME := $(shell uname)
+
+# when running on MacOS X, it must use gcc-8
+ifeq ($(UNAME), Darwin)
+	CC=gcc-8
+else
+	CC=gcc
+endif
 
 run: all
 	./$(BIN_PATH)/$(OUTPUT) input/matrix_a input/matrix_b output/matrix_c
 
-all: prepare main.o matrix.o genmatrix.o
+all: prepare main.o matrix.o util.o genmatrix.o
 	$(CC) $(OUTPUT).o matrix.o util.o -fopenmp -o $(BIN_PATH)/$(OUTPUT)
 
 main.o: main.c
