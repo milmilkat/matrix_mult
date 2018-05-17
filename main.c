@@ -1,4 +1,5 @@
 #include "matrix.h"
+#include "util.h"
 #include <string.h>
 
 char *matrix_path_a, *matrix_path_b, *matrix_path_c;
