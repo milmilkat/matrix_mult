@@ -11,7 +11,7 @@ endif
 
 # just execute the project using some sample data after building the project
 run: all
-	./$(BIN_PATH)/$(OUTPUT) input/matrix_a input/matrix_b output/matrix_c
+	./$(BIN_PATH)/$(OUTPUT) 4 input/medium_a input/medium_b output/medium_c
 
 # build the result main project
 all: prepare util.o matrix.o ptmatrix.o ommatrix.o genmatrix.o main.o
