@@ -96,5 +96,6 @@ void matrix_print_to_file(FILE *output, Matrix_t a)
   fprintf(output, "%ld %ld\n", a.rows, a.cols);
   for (size_t i = 0; i < a.rows; i++)
     for (size_t j = 0; j < a.cols; j++)
-      fprintf(output, "%ld %ld %lf\n", i, j, a.items[i][j]);
+      if (a.items[i][j] != 0.0)
+        fprintf(output, "%ld %ld %lf\n", i+1, j+1, a.items[i][j]);
 }
