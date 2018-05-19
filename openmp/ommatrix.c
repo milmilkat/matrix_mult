@@ -25,11 +25,11 @@ Matrix_t matrix_mult_openmp(Matrix_t a, Matrix_t b, int number_threads, int chun
     // Display who does which iterations for demonstration purposes
     // printf("Thread %d starting matrix multiply...\n",tid);
     #pragma omp for schedule (static, chunk)
-    for (long i=0; i<a.rows; i++)
+    for (size_t i=0; i<a.rows; i++)
     {
       // printf("Thread=%d did row=%ld\n",tid,i);
-      for(long j=0; j<b.cols; j++)
-        for (long k=0; k<a.cols; k++)
+      for(size_t j=0; j<b.cols; j++)
+        for (size_t k=0; k<a.cols; k++)
           result.items[i][j] += a.items[i][k] * b.items[k][j];
     }
   }   //End of parallel region

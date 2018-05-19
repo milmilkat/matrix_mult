@@ -20,8 +20,8 @@ int main(int argc, char *argv[])
   uint64_t time_pthreads, time_openmp;
 
   // create matrix A and matrix B
-  Matrix_t A = genmatrix(50, 50);
-  Matrix_t B = genmatrix(50, 50);
+  Matrix_t A = genmatrix(500, 500);
+  Matrix_t B = genmatrix(500, 500);
 
   // run matrix multiplication with pthreads
   time_pthreads = 0;
