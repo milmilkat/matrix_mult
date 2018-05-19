@@ -14,8 +14,8 @@ run: all
 	./$(BIN_PATH)/$(OUTPUT) input/matrix_a input/matrix_b output/matrix_c
 
 # build the result main project
-all: prepare util.o matrix.o ptmatrix.o genmatrix.o main.o
-	$(CC) -lpthread -fopenmp -o $(BIN_PATH)/$(OUTPUT) pthreads/ptmatrix.o matrix.o util.o $(OUTPUT).o
+all: prepare util.o matrix.o ptmatrix.o ommatrix.o genmatrix.o main.o
+	$(CC) -lpthread -fopenmp -o $(BIN_PATH)/$(OUTPUT) pthreads/ptmatrix.o openmp/ommatrix.o matrix.o util.o $(OUTPUT).o
 
 # compiling main file
 main.o: main.c
@@ -25,9 +25,13 @@ main.o: main.c
 ptmatrix.o: pthreads/ptmatrix.c
 	$(CC) -c pthreads/ptmatrix.c -o pthreads/ptmatrix.o -lpthread
 
+# compiling openmp module for matrix multiplication
+ommatrix.o: openmp/ommatrix.c
+	$(CC) -c openmp/ommatrix.c -o openmp/ommatrix.o -fopenmp
+
 # compiling common module for matrix multiplication
 matrix.o: matrix.c
-	$(CC) -fopenmp -c matrix.c -o matrix.o
+	$(CC) -c matrix.c -o matrix.o
 
 # compiling genmatrix which is allows for matrix generation to a given file
 genmatrix.o: genmatrix.c
