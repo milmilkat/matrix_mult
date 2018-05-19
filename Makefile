@@ -11,11 +11,14 @@ endif
 
 # just execute the project using some sample data after building the project
 run: all
-	./$(BIN_PATH)/$(OUTPUT) 4 input/matrix_a input/matrix_b output/matrix_c
+	./$(BIN_PATH)/$(OUTPUT) 2 input/matrix_a input/matrix_b output/matrix_c
 
-# build the result main project
-all: prepare util.o matrix.o ptmatrix.o ommatrix.o genmatrix.o main.o
+# build all binaries
+all: prepare util.o matrix.o ptmatrix.o ommatrix.o genmatrix.o main.o bench.o
 	$(CC) -lpthread -fopenmp -o $(BIN_PATH)/$(OUTPUT) pthreads/ptmatrix.o openmp/ommatrix.o matrix.o util.o $(OUTPUT).o
+	$(CC) -lpthread -fopenmp -o $(BIN_PATH)/bench pthreads/ptmatrix.o openmp/ommatrix.o matrix.o util.o benchmark/bench.o
+	$(CC) genmatrix.c -o $(BIN_PATH)/genmatrix
+	$(CC) matrix.o matrix_test.c -o $(BIN_PATH)/matrix_test
 
 # compiling main file
 main.o: main.c
@@ -33,10 +36,6 @@ ommatrix.o: openmp/ommatrix.c
 matrix.o: matrix.c
 	$(CC) -c matrix.c -o matrix.o
 
-# compiling genmatrix which is allows for matrix generation to a given file
-genmatrix.o: genmatrix.c
-	$(CC) -fopenmp genmatrix.c -o $(BIN_PATH)/genmatrix
-
 # utility functions (such as get_time) which can be used by any other module than main
 util.o: util.c
 	$(CC) -c util.c
@@ -45,9 +44,15 @@ util.o: util.c
 prepare: clean
 	mkdir $(BIN_PATH)
 
-# runs unit tests
+# task to run benchmark
+bench.o: benchmark/bench.c
+	$(CC) -lpthread -fopenmp -c benchmark/bench.c -o benchmark/bench.o
+
+# named tasks
+bench:
+	./$(BIN_PATH)/bench
+
 test:
-	$(CC) matrix.o matrix_test.c -o $(BIN_PATH)/matrix_test
 	./$(BIN_PATH)/matrix_test
 
 # removes all object and binary files
