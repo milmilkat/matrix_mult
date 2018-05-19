@@ -10,34 +10,59 @@ void release_resources(void);
 void open_matrix_files(void);
 
 int main(int argc, char *argv[]) {
-
+  int param_offset = 0;
   if (argc < 5)
   {
-    printf("usage main <number_of_threads> <matrix_a_file> <matrix_b_file> <matrix_c_output_file>\n");
+    printf("usage main [-opt] <number_of_threads> <matrix_a_file> <matrix_b_file> <matrix_c_output_file>\n");
+    printf("available options:\n");
+    printf("\t-p if you want to run using pthreads\n");
+    printf("\t-o if you want to run using openmp\n");
+    printf("\tif any option is provided, it will run as a single threaded app\n");
     exit(-1);
   }
 
-  int number_of_threads = atoi(argv[1]);
+  char opt = 's'; // single threaded version
+  if (argc == 6)
+  {
+    param_offset++;
+    opt = argv[1][1];
+  }
 
-  matrix_path_a = malloc(sizeof(char) * strlen(argv[2]));
-  matrix_path_b = malloc(sizeof(char) * strlen(argv[3]));
-  matrix_path_c = malloc(sizeof(char) * strlen(argv[4]));
+  int number_of_threads = atoi(argv[1 + param_offset]);
 
-  strcpy(matrix_path_a, argv[2]);
-  strcpy(matrix_path_b, argv[3]);
-  strcpy(matrix_path_c, argv[4]);
+  matrix_path_a = malloc(sizeof(char) * strlen(argv[2 + param_offset]));
+  matrix_path_b = malloc(sizeof(char) * strlen(argv[3 + param_offset]));
+  matrix_path_c = malloc(sizeof(char) * strlen(argv[4 + param_offset]));
+
+  strcpy(matrix_path_a, argv[2 + param_offset]);
+  strcpy(matrix_path_b, argv[3 + param_offset]);
+  strcpy(matrix_path_c, argv[4 + param_offset]);
 
   open_matrix_files();
 
   Matrix_t a = matrix_load_from_file(matrix_file_a);
   Matrix_t b = matrix_load_from_file(matrix_file_b);
+  Matrix_t c;
 
   // given a and b are valid matrix,
   // validates if a is able to be multiplied by b.
   if (matrix_mult_valid(a, b))
   {
-	  Matrix_t c = matrix_mult_openmp(a, b, number_of_threads, 1);
-    // Matrix_t c = matrix_mult_pthread(a, b, number_of_threads);
+    switch (opt)
+    {
+      case 'p':
+        printf("using pthreads version\n");
+        c = matrix_mult_pthread(a, b, number_of_threads);
+        break;
+      case 'o':
+        printf("using openmp version\n");
+        c = matrix_mult_openmp(a, b, number_of_threads, 1);
+        break;
+      default:
+        printf("using single threaded version\n");
+        c = matrix_mult(a, b);
+    }
+
     matrix_print_to_file(matrix_file_c, c);
     printf("Results written to %s\n", matrix_path_c);
     release_resources();

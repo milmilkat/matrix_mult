@@ -17,33 +17,48 @@ int main(int argc, char *argv[])
   srand(time(0));
 
   uint64_t start, end;
-  uint64_t time_pthreads, time_openmp;
+  uint64_t time_pthreads, time_openmp, time_single_thread;
 
   // create matrix A and matrix B
-  Matrix_t A = genmatrix(500, 500);
-  Matrix_t B = genmatrix(500, 500);
+  Matrix_t A = genmatrix(100, 100);
+  Matrix_t B = genmatrix(100, 100);
 
-  // run matrix multiplication with pthreads
-  time_pthreads = 0;
-  for (int i = 0; i < NUM_EXEC; i++)
+  for (int sample = 0; sample < 10; sample++)
   {
-    start = get_time();
-    matrix_mult_pthread(A, B, NUM_THREADS);
-    end = get_time();
-    time_pthreads += (end - start);
-  }
+    // run matrix multiplication without threads
+    time_single_thread = 0;
+    for (int i = 0; i < NUM_EXEC; i++)
+    {
+      start = get_time();
+      matrix_mult(A, B);
+      end = get_time();
+      time_single_thread += (end - start);
+    }
 
-  time_openmp = 0;
-  for (int i = 0; i < NUM_EXEC; i++)
-  {
-    start = get_time();
-    matrix_mult_openmp(A, B, NUM_THREADS, CHUNKS);
-    end = get_time();
-    time_openmp += (end - start);
-  }
+    // run matrix multiplication with pthreads
+    time_pthreads = 0;
+    for (int i = 0; i < NUM_EXEC; i++)
+    {
+      start = get_time();
+      matrix_mult_pthread(A, B, NUM_THREADS);
+      end = get_time();
+      time_pthreads += (end - start);
+    }
 
-  printf("Avg pthreads: %d\n", time_pthreads / NUM_EXEC);
-  printf("Avg openmp: %d\n", time_openmp / NUM_EXEC);
+    // run matrix multiplication with openmp
+    time_openmp = 0;
+    for (int i = 0; i < NUM_EXEC; i++)
+    {
+      start = get_time();
+      matrix_mult_openmp(A, B, NUM_THREADS, CHUNKS);
+      end = get_time();
+      time_openmp += (end - start);
+    }
+
+    printf("Avg single thread: %d\n", time_single_thread / NUM_EXEC);
+    printf("Avg pthreads.....: %d\n", time_pthreads / NUM_EXEC);
+    printf("Avg openmp.......: %d\n\n", time_openmp / NUM_EXEC);
+  }
 }
 
 Matrix_t genmatrix(long rows, long cols)
