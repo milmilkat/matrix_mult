@@ -1,5 +1,4 @@
 #include "matrix.h"
-#include <omp.h>
 
 Matrix_t matrix_load_from_file(FILE *file)
 {
@@ -92,49 +91,12 @@ void matrix_print(Matrix_t a)
   }
 }
 
-Matrix_t matrix_mult_openmp(Matrix_t a, Matrix_t b, int number_threads, int chunk_size)
-{
-  int tid, nthreads, chunk;
-  Matrix_t result = matrix_create(a.rows, b.cols);
-  omp_set_dynamic(0);
-  omp_set_num_threads(number_threads);
-
-  chunk = chunk_size;                    // set loop iteration chunk size
-
-  // Spawn a parallel region explicitly scoping all variables
-  #pragma omp parallel shared(a,b,result,nthreads,chunk) private(tid)
-  {
-  tid = omp_get_thread_num();
-  if (tid == 0)
-	{
-	nthreads = number_threads;//omp_set_num_threads(number_threads); //omp_get_num_threads();
-	omp_set_dynamic(0);
-	omp_set_num_threads(number_threads);
-	printf("Starting matrix multiple example with %d threads\n",nthreads);
-	}
-
-  // Do matrix multiply sharing iterations on outer loop 
-  // Display who does which iterations for demonstration purposes 
-  printf("Thread %d starting matrix multiply...\n",tid);
-  #pragma omp for schedule (static, chunk)
-  for (long i=0; i<a.rows; i++)    
-	{
-	printf("Thread=%d did row=%ld\n",tid,i);
-	for(long j=0; j<b.cols; j++)       
-	  for (long k=0; k<a.cols; k++)
-	    result.items[i][j] += a.items[i][k] * b.items[k][j];
-	}
-  }   //End of parallel region 
-  
-  return result;
-}
-
 void matrix_print_to_file(FILE *output, Matrix_t a)
 {
 
   fprintf(output, "%ld %ld\n", a.rows, a.cols);
   for (long i = 0; i < a.rows; i++)
-    for (long j = 0; j < a.rows; j++)
+    for (long j = 0; j < a.cols; j++)
       fprintf(output, "%ld %ld %lf\n", i, j, a.items[i][j]);
 
 }
