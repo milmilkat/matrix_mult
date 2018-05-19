@@ -57,8 +57,6 @@ test:
 
 # removes all object and binary files
 clean:
-	rm -f *.o $(OUTPUT)
-	rm -f pthreads/*.o
-	rm -f openmp/*.o
+	find ./ -iname "*.o" | xargs rm -f
 	rm -Rf $(BIN_PATH)
 	rm -f output/*
