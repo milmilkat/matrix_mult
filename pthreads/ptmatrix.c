@@ -17,11 +17,11 @@ static void* _mult_pthread(void *params)
   Matrix_t *b = tparam->m2;
 
   // running matrix multiplication on given range of rows of matrix a
-  for (int i = tparam->start_range; i < tparam->end_range; i++)
-    for (int j = 0; j < b->cols; j++) // columns of matrix b
+  for (size_t i = tparam->start_range; i < tparam->end_range; i++)
+    for (size_t j = 0; j < b->cols; j++) // columns of matrix b
     {
       _result.items[i][j] = 0.0;
-      for (int k = 0; k < b->rows; k++) // rows of matrix b
+      for (size_t k = 0; k < b->rows; k++) // rows of matrix b
         _result.items[i][j] += a->items[i][k] * b->items[k][j];
     }
 

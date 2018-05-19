@@ -6,9 +6,9 @@
 
 typedef struct Thread
 {
-    long id;
-    long start_range;
-    long end_range;
+    size_t id;
+    size_t start_range;
+    size_t end_range;
     Matrix_t *m1;
     Matrix_t *m2;
 } Thread_t;
