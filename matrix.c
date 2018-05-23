@@ -99,3 +99,34 @@ void matrix_print_to_file(FILE *output, Matrix_t a)
       if (a.items[i][j] != 0.0)
         fprintf(output, "%ld %ld %lf\n", i+1, j+1, a.items[i][j]);
 }
+
+size_t* matrix_sparsity(Matrix_t a)
+{
+  size_t *result = malloc(a.rows * sizeof(size_t));
+  size_t m = 0;
+  for(size_t k = 0; k < a.rows; k++)
+	*(result+k) = -1;
+  size_t i = 0;
+  while (i < a.rows)
+  {
+    size_t j = 0;
+    while (j < a.cols)
+    {
+      if (a.items[i][j] != 0.0)
+      {
+        i++;
+        break;
+      }
+      else
+        j++;
+
+      if (j == a.cols)
+        {
+          *(result + m) = i;
+		  m++;
+		  i++;
+        }
+    }
+  }
+  return result;
+}

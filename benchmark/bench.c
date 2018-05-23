@@ -1,5 +1,6 @@
 #include "../pthreads/ptmatrix.h"
 #include "../openmp/ommatrix.h"
+#include <stdint.h>
 #include "../util.h"
 #include <string.h>
 
