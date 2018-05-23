@@ -1,5 +1,6 @@
 #include "pthreads/ptmatrix.h"
 #include "openmp/ommatrix.h"
+#include <stdint.h>
 #include "util.h"
 #include <string.h>
 
@@ -43,6 +44,11 @@ int main(int argc, char *argv[]) {
   Matrix_t a = matrix_load_from_file(matrix_file_a);
   Matrix_t b = matrix_load_from_file(matrix_file_b);
   Matrix_t c;
+
+  //testing 
+  size_t *tt = matrix_sparsity(a);
+  for ( size_t i = 0; i < a.rows; i++)
+  	printf("sth sth sth sth %d\n",*(tt + i));
 
   // given a and b are valid matrix,
   // validates if a is able to be multiplied by b.

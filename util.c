@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include "util.h"
 
 uint64_t get_time(void)
