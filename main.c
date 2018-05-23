@@ -44,11 +44,11 @@ int main(int argc, char *argv[]) {
   Matrix_t a = matrix_load_from_file(matrix_file_a);
   Matrix_t b = matrix_load_from_file(matrix_file_b);
   Matrix_t c;
-
+  
   //testing 
-  size_t *tt = matrix_sparsity(a);
-  for ( size_t i = 0; i < a.rows; i++)
-  	printf("sth sth sth sth %d\n",*(tt + i));
+  //size_t *tt = matrix_sparsity(a);
+  //for ( size_t i = 0; i < a.rows; i++)
+  //	printf("sth sth sth sth %d\n",*(tt + i));
 
   // given a and b are valid matrix,
   // validates if a is able to be multiplied by b.
@@ -62,13 +62,12 @@ int main(int argc, char *argv[]) {
         break;
       case 'o':
         printf("using openmp version\n");
-        c = matrix_mult_openmp(a, b, number_of_threads, 1);
+        c = matrix_mult_openmp(a, b, a.rows, 1);
         break;
       default:
         printf("using single threaded version\n");
         c = matrix_mult(a, b);
     }
-
     matrix_print_to_file(matrix_file_c, c);
     printf("Results written to %s\n", matrix_path_c);
     release_resources();
