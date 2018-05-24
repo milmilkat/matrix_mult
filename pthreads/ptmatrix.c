@@ -17,19 +17,21 @@ static void* _mult_pthread(void *params)
   Matrix_t *b = tparam->m2;
 
   // running matrix multiplication on given range of rows of matrix a
-  for (size_t i = tparam->start_range; i < tparam->end_range; i++)
-    for (size_t j = 0; j < b->cols; j++) // columns of matrix b
-    {
-      _result.items[i][j] = 0.0;
-      for (size_t k = 0; k < b->rows; k++) // rows of matrix b
-        _result.items[i][j] += a->items[i][k] * b->items[k][j];
-    }
+  size_t row_to_compute = tparam->row_to_compute;
+
+  for (size_t j = 0; j < b->cols; j++) // columns of matrix b
+  {
+    _result.items[row_to_compute][j] = 0.0;
+    for (size_t k = 0; k < b->rows; k++) // rows of matrix b
+      _result.items[row_to_compute][j] += a->items[row_to_compute][k] * b->items[k][j];
+  }
 
   return NULL;
 }
 
-Matrix_t matrix_mult_pthread(Matrix_t a, Matrix_t b, int number_threads)
+Matrix_t matrix_mult_pthread(Matrix_t a, Matrix_t b, size_t *sparsity)
 {
+  size_t number_threads = a.rows;
   pthreads = malloc(sizeof(pthread_t) * number_threads);
   if (pthreads == NULL)
   {
@@ -50,18 +52,17 @@ Matrix_t matrix_mult_pthread(Matrix_t a, Matrix_t b, int number_threads)
 
   _result = matrix_create(a.rows, b.cols);
 
-  long offset = 0;
   for (int tid = 0; tid < number_threads; tid++)
   {
-    Thread_t *tparam = malloc(sizeof(Thread_t));
-    tparam->id = tid;
-    tparam->start_range = tid + offset;
-    tparam->end_range = tid + offset + range;
-    tparam->m1 = &a;
-    tparam->m2 = &b;
-    offset += range - 1;
+    if (sparsity[tid] > 0 && sparsity[tid] == tid) {
+      Thread_t *tparam = malloc(sizeof(Thread_t));
+      tparam->id = tid;
+      tparam->row_to_compute = tid;
+      tparam->m1 = &a;
+      tparam->m2 = &b;
 
-    pthread_create(&pthreads[tid], NULL, _mult_pthread, (void*) tparam);
+      pthread_create(&pthreads[tid], NULL, _mult_pthread, (void*) tparam);
+    }
   }
 
   for (int tid = 0; tid < number_threads; tid++)

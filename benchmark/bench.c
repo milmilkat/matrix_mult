@@ -1,5 +1,6 @@
 #include "../pthreads/ptmatrix.h"
 #include "../openmp/ommatrix.h"
+#include <stdint.h>
 #include "../util.h"
 #include <string.h>
 
@@ -23,6 +24,8 @@ int main(int argc, char *argv[])
   Matrix_t A = genmatrix(100, 100);
   Matrix_t B = genmatrix(100, 100);
 
+  size_t *tt = matrix_sparsity(A);
+
   for (int sample = 0; sample < 10; sample++)
   {
     // run matrix multiplication without threads
@@ -40,7 +43,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < NUM_EXEC; i++)
     {
       start = get_time();
-      matrix_mult_pthread(A, B, NUM_THREADS);
+      matrix_mult_pthread(A, B, tt);
       end = get_time();
       time_pthreads += (end - start);
     }
