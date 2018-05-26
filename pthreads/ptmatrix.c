@@ -29,9 +29,9 @@ static void* _mult_pthread(void *params)
   return NULL;
 }
 
-Matrix_t matrix_mult_pthread(Matrix_t a, Matrix_t b, size_t *sparsity)
+Matrix_t matrix_mult_pthread(Matrix_t a, Matrix_t b, size_t *sparsity, size_t size_of_sp)
 {
-  size_t number_threads = a.rows;
+  size_t number_threads = size_of_sp;
   pthreads = malloc(sizeof(pthread_t) * number_threads);
   if (pthreads == NULL)
   {
@@ -42,27 +42,15 @@ Matrix_t matrix_mult_pthread(Matrix_t a, Matrix_t b, size_t *sparsity)
   long range;
   long N = a.rows;
 
-  if (N < number_threads)
-  {
-    range = 1;
-    number_threads = N;
-  }
-  else
-    range = N / number_threads;
-
   _result = matrix_create(a.rows, b.cols);
-
-  for (int tid = 0; tid < number_threads; tid++)
+  for (size_t tid = 0; tid < number_threads; tid++)
   {
-    if (sparsity[tid] > 0 && sparsity[tid] == tid) {
-      Thread_t *tparam = malloc(sizeof(Thread_t));
-      tparam->id = tid;
-      tparam->row_to_compute = tid;
-      tparam->m1 = &a;
-      tparam->m2 = &b;
-
-      pthread_create(&pthreads[tid], NULL, _mult_pthread, (void*) tparam);
-    }
+    Thread_t *tparam = malloc(sizeof(Thread_t));
+    tparam->id = tid;
+    tparam->row_to_compute = sparsity[tid];
+    tparam->m1 = &a;
+    tparam->m2 = &b;
+    pthread_create(&pthreads[tid], NULL, _mult_pthread, (void*) tparam);
   }
 
   for (int tid = 0; tid < number_threads; tid++)

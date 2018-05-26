@@ -12,6 +12,6 @@ typedef struct Thread
     Matrix_t *m2;
 } Thread_t;
 
-Matrix_t matrix_mult_pthread(Matrix_t a, Matrix_t b, size_t *sparsity);
+Matrix_t matrix_mult_pthread(Matrix_t a, Matrix_t b, size_t *sparsity, size_t size_of_sp);
 
 #endif
