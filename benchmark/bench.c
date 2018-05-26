@@ -58,9 +58,9 @@ int main(int argc, char *argv[])
       time_openmp += (end - start);
     }
 
-    printf("Avg single thread: %d\n", time_single_thread / NUM_EXEC);
-    printf("Avg pthreads.....: %d\n", time_pthreads / NUM_EXEC);
-    printf("Avg openmp.......: %d\n\n", time_openmp / NUM_EXEC);
+    printf("Avg single thread: %ld\n", time_single_thread / NUM_EXEC);
+    printf("Avg pthreads.....: %ld\n", time_pthreads / NUM_EXEC);
+    printf("Avg openmp.......: %ld\n\n", time_openmp / NUM_EXEC);
   }
 }
 

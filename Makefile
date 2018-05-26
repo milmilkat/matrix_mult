@@ -43,6 +43,8 @@ util.o: util.c
 # prepare the environment for project building
 prepare: clean
 	mkdir $(BIN_PATH)
+	rm -rf output
+	mkdir output
 
 # task to run benchmark
 bench.o: benchmark/bench.c
