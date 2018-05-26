@@ -7,7 +7,6 @@
 // constants
 #define RANDOM_DECIMAL 0.009923409809809809
 #define NUM_EXEC 10
-#define NUM_THREADS 4
 #define CHUNKS 1
 
 // prototypes
@@ -54,7 +53,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < NUM_EXEC; i++)
     {
       start = get_time();
-      matrix_mult_openmp(A, B, NUM_THREADS, CHUNKS);
+      matrix_mult_openmp(A, B, A.rows, CHUNKS);
       end = get_time();
       time_openmp += (end - start);
     }
