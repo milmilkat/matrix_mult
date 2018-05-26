@@ -35,7 +35,7 @@ Matrix_t matrix_mult_pthread(Matrix_t a, Matrix_t b, size_t *sparsity, size_t si
   pthreads = malloc(sizeof(pthread_t) * number_threads);
   if (pthreads == NULL)
   {
-    printf("Cannot allocate memory for %d threads\n", number_threads);
+    printf("Cannot allocate memory for %ld threads\n", number_threads);
     exit(-1);
   }
 

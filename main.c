@@ -47,6 +47,7 @@ int main(int argc, char *argv[]) {
   size_t *tt = matrix_sparsity(a);
   size_t size_of_sp = matrix_size_of_sparsity(tt, a.rows);
 
+
   // given a and b are valid matrix,
   // validates if a is able to be multiplied by b.
   if (matrix_mult_valid(a, b))
