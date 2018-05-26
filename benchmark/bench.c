@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
   Matrix_t B = genmatrix(100, 100);
 
   size_t *tt = matrix_sparsity(A);
+  size_t size_of_sp = matrix_size_of_sparsity(tt, A.rows);
 
   for (int sample = 0; sample < 10; sample++)
   {
@@ -43,7 +44,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < NUM_EXEC; i++)
     {
       start = get_time();
-      matrix_mult_pthread(A, B, tt);
+      matrix_mult_pthread(A, B, tt, size_of_sp);
       end = get_time();
       time_pthreads += (end - start);
     }

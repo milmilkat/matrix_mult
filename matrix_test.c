@@ -13,6 +13,9 @@ void assertEquals(double, double);
 void test_small_matrix_mult(void);
 void test_matrix_transpose(void);
 void test_matrix_mult_t(void);
+void test_matrix_sparsity();
+void test_matrix_count_sparsity();
+void assertEqualsInt(size_t expected, size_t current);
 
 int main(int argc, char *argv[])
 {
@@ -22,6 +25,8 @@ int main(int argc, char *argv[])
   test_small_matrix_mult();
   test_matrix_transpose();
   test_matrix_mult_t();
+  test_matrix_sparsity();
+  test_matrix_count_sparsity();
   printf("\nAll tests have passed.\n");
 }
 
@@ -91,6 +96,51 @@ void test_matrix_transpose()
   assertEquals(1.0, Mt.items[0][0]);
   assertEquals(3.0, Mt.items[0][1]);
   assertEquals(5.0, Mt.items[0][2]);
+}
+
+void test_matrix_sparsity()
+{
+  printf(ANSI_COLOR_YELLOW "\nrunning test_matrix_sparsity\n");
+  Matrix_t M = matrix_create(5, 2);
+  matrix_set(M, 0, 0, 0.10); matrix_set(M, 0, 1, 0.01);
+  matrix_set(M, 1, 0, 0.0); matrix_set(M, 1, 1, 0.0);
+  matrix_set(M, 2, 0, 0.03); matrix_set(M, 2, 1, 0.04);
+  matrix_set(M, 3, 0, 0.0); matrix_set(M, 3, 1, 0.0);
+  matrix_set(M, 4, 0, 1.0); matrix_set(M, 4, 1, 1.0);
+
+  size_t *sparsity = matrix_sparsity(M);
+
+  matrix_print(M);
+  assertEqualsInt(0, sparsity[0]);
+  assertEqualsInt(2, sparsity[1]);
+  assertEqualsInt(4, sparsity[2]);
+  assertEqualsInt(-1, sparsity[3]);
+  assertEqualsInt(-1, sparsity[4]);
+}
+
+void test_matrix_count_sparsity()
+{
+  printf(ANSI_COLOR_YELLOW "\nrunning test_matrix_count_sparsity\n");
+  Matrix_t M = matrix_create(2, 2);
+  matrix_set(M, 0, 0, 0.3); matrix_set(M, 0, 1, 0.1);
+  matrix_set(M, 1, 0, 0.0); matrix_set(M, 1, 1, 1.2);
+
+  size_t *sparsity = matrix_sparsity(M);
+  size_t size = matrix_size_of_sparsity(sparsity, M.rows);
+
+  assertEqualsInt(2, size);
+}
+
+void assertEqualsInt(size_t expected, size_t current)
+{
+  if (expected != current)
+  {
+    printf(ANSI_COLOR_RED "Should be %ld, but was %ld\n", expected, current);
+    exit(0);
+  } else
+  {
+    printf(ANSI_COLOR_GREEN "%ld equals to %ld\n", expected, current);
+  }
 }
 
 void assertEquals(double expected, double current)

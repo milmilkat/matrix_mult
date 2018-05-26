@@ -43,8 +43,9 @@ int main(int argc, char *argv[]) {
   Matrix_t b = matrix_load_from_file(matrix_file_b);
   Matrix_t c;
 
-  //testing
+  // retrieving sparsity
   size_t *tt = matrix_sparsity(a);
+  size_t size_of_sp = matrix_size_of_sparsity(tt, a.rows);
 
   // given a and b are valid matrix,
   // validates if a is able to be multiplied by b.
@@ -54,7 +55,7 @@ int main(int argc, char *argv[]) {
     {
       case 'p':
         printf("using pthreads version\n");
-        c = matrix_mult_pthread(a, b, tt);
+        c = matrix_mult_pthread(a, b, tt, size_of_sp);
         break;
       case 'o':
         printf("using openmp version\n");

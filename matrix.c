@@ -104,29 +104,25 @@ size_t* matrix_sparsity(Matrix_t a)
 {
   size_t *result = malloc(a.rows * sizeof(size_t));
   size_t m = 0;
-  for(size_t k = 0; k < a.rows; k++)
-	*(result+k) = -1;
-  size_t i = 0;
-  while (i < a.rows)
-  {
-    size_t j = 0;
-    while (j < a.cols)
+  for (size_t k = 0; k < a.rows; k++)
+	  *(result+k) = -1;
+
+  for (size_t i = 0; i < a.rows; i++)
+    for (size_t j = 0; j < a.cols; j++)
     {
       if (a.items[i][j] != 0.0)
       {
-        i++;
+        *(result + m) = i;
+        m++;
         break;
       }
-      else
-        j++;
-
-      if (j == a.cols)
-        {
-          *(result + m) = i;
-		  m++;
-		  i++;
-        }
     }
-  }
   return result;
+}
+
+size_t matrix_size_of_sparsity(size_t *sp, size_t rows)
+{
+  size_t count = 0;
+  for (; sp[count] != -1 && count < rows; count++);
+  return count;
 }
