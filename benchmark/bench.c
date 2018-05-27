@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
   Matrix_t A = genmatrix(100, 100);
   Matrix_t B = genmatrix(100, 100);
 
-  size_t *tt = matrix_sparsity(A);
-  size_t size_of_sp = matrix_size_of_sparsity(tt, A.rows);
+  size_t *nsmatrix = non_sparsing_matrix(A);
+  size_t size_of_nsp = size_of_non_sparsed(nsmatrix, A.rows);
 
   for (int sample = 0; sample < 10; sample++)
   {
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < NUM_EXEC; i++)
     {
       start = get_time();
-      matrix_mult_pthread(A, B, tt, size_of_sp);
+      matrix_mult_pthread(A, B, nsmatrix, size_of_nsp);
       end = get_time();
       time_pthreads += (end - start);
     }
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < NUM_EXEC; i++)
     {
       start = get_time();
-      matrix_mult_openmp(A, B, A.rows, CHUNKS);
+      matrix_mult_openmp(A, B, nsmatrix, size_of_nsp);
       end = get_time();
       time_openmp += (end - start);
     }
