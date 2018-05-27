@@ -100,7 +100,7 @@ void matrix_print_to_file(FILE *output, Matrix_t a)
         fprintf(output, "%ld %ld %lf\n", i+1, j+1, a.items[i][j]);
 }
 
-size_t* matrix_sparsity(Matrix_t a)
+size_t* non_sparsing_matrix(Matrix_t a)
 {
   size_t *result = malloc(a.rows * sizeof(size_t));
   size_t m = 0;
@@ -120,7 +120,7 @@ size_t* matrix_sparsity(Matrix_t a)
   return result;
 }
 
-size_t matrix_size_of_sparsity(size_t *sp, size_t rows)
+size_t size_of_non_sparsed(size_t *sp, size_t rows)
 {
   size_t count = 0;
   for (; sp[count] != -1 && count < rows; count++);

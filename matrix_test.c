@@ -108,14 +108,14 @@ void test_matrix_sparsity()
   matrix_set(M, 3, 0, 0.0); matrix_set(M, 3, 1, 0.0);
   matrix_set(M, 4, 0, 1.0); matrix_set(M, 4, 1, 1.0);
 
-  size_t *sparsity = matrix_sparsity(M);
+  size_t *nsparsed = non_sparsing_matrix(M);
 
   matrix_print(M);
-  assertEqualsInt(0, sparsity[0]);
-  assertEqualsInt(2, sparsity[1]);
-  assertEqualsInt(4, sparsity[2]);
-  assertEqualsInt(-1, sparsity[3]);
-  assertEqualsInt(-1, sparsity[4]);
+  assertEqualsInt(0, nsparsed[0]);
+  assertEqualsInt(2, nsparsed[1]);
+  assertEqualsInt(4, nsparsed[2]);
+  assertEqualsInt(-1, nsparsed[3]);
+  assertEqualsInt(-1, nsparsed[4]);
 }
 
 void test_matrix_count_sparsity()
@@ -125,8 +125,8 @@ void test_matrix_count_sparsity()
   matrix_set(M, 0, 0, 0.3); matrix_set(M, 0, 1, 0.1);
   matrix_set(M, 1, 0, 0.0); matrix_set(M, 1, 1, 1.2);
 
-  size_t *sparsity = matrix_sparsity(M);
-  size_t size = matrix_size_of_sparsity(sparsity, M.rows);
+  size_t *nsparsed = non_sparsing_matrix(M);
+  size_t size = size_of_non_sparsed(nsparsed, M.rows);
 
   assertEqualsInt(2, size);
 }
