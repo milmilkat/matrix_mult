@@ -52,7 +52,10 @@ bench.o: benchmark/bench.c
 
 # named tasks
 bench:
-	./$(BIN_PATH)/bench
+	./$(BIN_PATH)/bench normal 200
+
+bench_sparse:
+	./$(BIN_PATH)/bench sparse 200
 
 test:
 	./$(BIN_PATH)/matrix_test
