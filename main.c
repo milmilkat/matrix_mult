@@ -47,7 +47,6 @@ int main(int argc, char *argv[]) {
   size_t *nsmatrix = non_sparsing_matrix(a);
   size_t size_of_nsp = size_of_non_sparsed(nsmatrix, a.rows);
 
-
   // given a and b are valid matrix,
   // validates if a is able to be multiplied by b.
   if (matrix_mult_valid(a, b))
