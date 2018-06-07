@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     printf("available options:\n");
     printf("\tp if you want to run using pthreads\n");
     printf("\to if you want to run using openmp\n");
-    printf("\tif any option is provided, it will run as a single threaded app\n");
+    printf("\tif no option is provided, it will run as a single threaded app\n");
     exit(-1);
   }
 
@@ -43,8 +43,9 @@ int main(int argc, char *argv[]) {
   Matrix_t b = matrix_load_from_file(matrix_file_b);
   Matrix_t c;
 
-  //testing
-  size_t *tt = matrix_sparsity(a);
+  // retrieving sparsity
+  size_t *nsmatrix = non_sparsing_matrix(a);
+  size_t size_of_nsp = size_of_non_sparsed(nsmatrix, a.rows);
 
   // given a and b are valid matrix,
   // validates if a is able to be multiplied by b.
@@ -54,11 +55,11 @@ int main(int argc, char *argv[]) {
     {
       case 'p':
         printf("using pthreads version\n");
-        c = matrix_mult_pthread(a, b, tt);
+        c = matrix_mult_pthread(a, b, nsmatrix, size_of_nsp);
         break;
       case 'o':
         printf("using openmp version\n");
-        c = matrix_mult_openmp(a, b, a.rows, 1);
+        c = matrix_mult_openmp(a, b, nsmatrix, size_of_nsp);
         break;
       default:
         printf("using single threaded version\n");

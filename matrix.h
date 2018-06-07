@@ -25,6 +25,6 @@ bool matrix_mult_valid(Matrix_t a, Matrix_t b);
 void matrix_print(Matrix_t a);
 void matrix_print_to_file(FILE *output, Matrix_t a);
 Matrix_t matrix_mult_openmp();
-size_t* matrix_sparsity(Matrix_t a);
-
+size_t* non_sparsing_matrix(Matrix_t a);
+size_t size_of_non_sparsed(size_t *sp, size_t rows);
 #endif
